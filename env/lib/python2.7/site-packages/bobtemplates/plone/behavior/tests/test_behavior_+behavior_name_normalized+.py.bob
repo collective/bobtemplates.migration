@@ -1,0 +1,32 @@
+# -*- coding: utf-8 -*-
+from {{{package.dottedname}}}.behaviors.{{{behavior_name_normalized}}} import I{{{ behavior_name_klass }}}
+from {{{package.dottedname}}}.testing import {{{package.uppercasename}}}_INTEGRATION_TESTING  # noqa
+from plone.app.testing import setRoles
+from plone.app.testing import TEST_USER_ID
+from plone.behavior.interfaces import IBehavior
+from zope.component import getUtility
+
+import unittest
+
+
+class {{{ behavior_name_klass }}}IntegrationTest(unittest.TestCase):
+
+    layer = {{{package.uppercasename}}}_INTEGRATION_TESTING
+
+    def setUp(self):
+        """Custom shared utility setup for tests."""
+        self.portal = self.layer['portal']
+        setRoles(self.portal, TEST_USER_ID, ['Manager'])
+
+    def test_behavior_{{{behavior_name_normalized}}}(self):
+        behavior = getUtility(IBehavior, '{{{ package.dottedname }}}.{{{ behavior_name_normalized }}}')
+        self.assertEqual(
+            behavior.marker,
+            I{{{ behavior_name_klass }}},
+        )
+        behavior_name = '{{{ package.dottedname }}}.behaviors.{{{ behavior_name_normalized }}}.I{{{ behavior_name_klass }}}'
+        behavior = getUtility(IBehavior, behavior_name)
+        self.assertEqual(
+            behavior.marker,
+            I{{{ behavior_name_klass }}},
+        )

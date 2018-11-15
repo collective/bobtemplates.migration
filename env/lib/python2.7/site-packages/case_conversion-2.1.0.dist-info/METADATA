@@ -1,0 +1,16 @@
+Metadata-Version: 2.1
+Name: case-conversion
+Version: 2.1.0
+Summary: Convert between different types of cases (unicode supported)
+Home-page: https://github.com/AlejandroFrias/case-conversion
+Author: Alejandro Frias
+Author-email: joker454@gmail.com
+License: MIT
+Download-URL: https://github.com/AlejandroFrias/case-conversion/tarball/2.0.0
+Keywords: case convert conversion camel pascal snake kebab spinal unicode
+Platform: UNKNOWN
+Requires-Dist: regex (>=2016.2.25)
+
+UNKNOWN
+
+

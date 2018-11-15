@@ -1,0 +1,52 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:five="http://namespaces.zope.org/five"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    i18n_domain="ploneconf.migration">
+
+  <!-- Set up z3c.autoinlcude to scan dependencies and plugins of this package -->
+  <includePlugins package="." />
+  <includeDependencies package="." />
+  <include package=".import" />
+
+  <five:registerPackage package="." initialize=".initialize" />
+
+  <genericsetup:registerProfile
+      name="default"
+      title="ploneconf.migration (default)"
+      directory="profiles/default"
+      description="Installation profile for ploneconf.migration"
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      />
+
+  <genericsetup:upgradeStep
+      title="ploneconf.run_pre_migration"
+      description="Run before migration"
+      source="0001"
+      destination="0002"
+      handler="ploneconf.migration.upgrades.run_pre_migration"
+      sortkey="1"
+      profile="ploneconf.migration:default"
+      />
+
+  <genericsetup:upgradeStep
+      title="ploneconf.run_migration"
+      description="Run the migration"
+      source="0002"
+      destination="0003"
+      handler="ploneconf.migration.upgrades.run_migration"
+      sortkey="1"
+      profile="ploneconf.migration:default"
+      />
+
+  <genericsetup:upgradeStep
+      title="ploneconf.run_post_migration"
+      description="Run after migration"
+      source="0003"
+      destination="0004"
+      handler="ploneconf.migration.upgrades.run_post_migration"
+      sortkey="1"
+      profile="ploneconf.migration:default"
+      />
+
+</configure>

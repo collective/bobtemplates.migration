@@ -1,0 +1,27 @@
+# -*- coding: utf-8 -*-
+
+{{% if view_template %}}
+from {{{ package.dottedname }}} import _
+{{% endif %}}
+from Products.Five.browser import BrowserView
+{{% if view_template %}}
+# from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+{{% endif %}}
+
+
+class {{{ view_python_class_name }}}(BrowserView):
+{{% if view_template %}}
+    # If you want to define a template here, please remove the template from
+    # the configure.zcml registration of this view.
+    # template = ViewPageTemplateFile('{{{ view_template_name }}}.pt')
+
+    def __call__(self):
+        self.msg = _(u'A small message')
+        return self.index()
+{{% else %}}
+    def __call__(self):
+        template = '''<li class="heading" i18n:translate="">
+          Sample View
+        </li>'''
+        return template
+{{% endif %}}

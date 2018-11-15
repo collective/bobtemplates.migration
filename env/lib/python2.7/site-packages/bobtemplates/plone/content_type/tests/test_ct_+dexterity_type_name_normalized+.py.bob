@@ -1,0 +1,190 @@
+# -*- coding: utf-8 -*-
+{{% if dexterity_type_create_class or not dexterity_type_supermodel %}}
+from {{{ package.dottedname }}}.content.{{{ dexterity_type_name_normalized }}} import I{{{ dexterity_type_name_klass }}}  # NOQA E501
+{{% endif %}}
+from {{{ package.dottedname }}}.testing import {{{package.uppercasename}}}_INTEGRATION_TESTING  # noqa
+from plone import api
+{{% if dexterity_type_filter_content_types | to_boolean and dexterity_type_base_class | lower == 'container' %}}
+from plone.api.exc import InvalidParameterError
+{{% endif %}}
+from plone.app.testing import setRoles
+from plone.app.testing import TEST_USER_ID
+{{% if dexterity_type_name_klass == 'Container' %}}
+from plone.dexterity.interfaces import IDexterityContainer
+{{% endif %}}
+{{% if dexterity_type_name_klass == 'Item' %}}
+from plone.dexterity.interfaces import IDexterityItem
+{{% endif %}}
+from plone.dexterity.interfaces import IDexterityFTI
+{{% if dexterity_type_supermodel %}}
+{{% endif %}}
+from zope.component import createObject
+from zope.component import queryUtility
+
+import unittest
+
+
+{{% if dexterity_type_supermodel %}}
+try:
+    from plone.dexterity.schema import portalTypeToSchemaName
+except ImportError:
+    # Plone < 5
+    from plone.dexterity.utils import portalTypeToSchemaName
+{{% endif %}}
+
+
+class {{{ dexterity_type_name_klass }}}IntegrationTest(unittest.TestCase):
+
+    layer = {{{package.uppercasename}}}_INTEGRATION_TESTING
+
+    def setUp(self):
+        """Custom shared utility setup for tests."""
+        self.portal = self.layer['portal']
+        setRoles(self.portal, TEST_USER_ID, ['Manager'])
+{{% if dexterity_parent_container_type_name %}}
+        portal_types = self.portal.portal_types
+        parent_id = portal_types.constructContent(
+            '{{{ dexterity_parent_container_type_name }}}',
+            self.portal,
+            '{{{ dexterity_type_name_normalized }}}',
+            title='Parent container',
+        )
+        self.parent = self.portal[parent_id]
+{{% endif %}}
+
+    def test_ct_{{{ dexterity_type_name_normalized }}}_schema(self):
+        fti = queryUtility(IDexterityFTI, name='{{{ dexterity_type_name }}}')
+        schema = fti.lookupSchema()
+{{% if dexterity_type_supermodel %}}
+        schema_name = portalTypeToSchemaName('{{{ dexterity_type_name }}}')
+        self.assertEqual(schema_name, schema.getName())
+{{% else %}}
+        self.assertEqual(I{{{ dexterity_type_name_klass }}}, schema)
+{{% endif %}}
+
+    def test_ct_{{{ dexterity_type_name_normalized }}}_fti(self):
+        fti = queryUtility(IDexterityFTI, name='{{{ dexterity_type_name }}}')
+        self.assertTrue(fti)
+
+    def test_ct_{{{ dexterity_type_name_normalized }}}_factory(self):
+        fti = queryUtility(IDexterityFTI, name='{{{ dexterity_type_name }}}')
+        factory = fti.factory
+        obj = createObject(factory)
+
+{{% if dexterity_type_create_class %}}
+        self.assertTrue(
+            I{{{ dexterity_type_name_klass }}}.providedBy(obj),
+            u'I{{{ dexterity_type_name_klass }}} not provided by {0}!'.format(
+                obj,
+            ),
+        )
+{{% elif dexterity_type_name_klass == 'Container' %}}
+        self.assertTrue(
+            IDexterityContainer.providedBy(obj),
+            u'IDexterityContainer not provided by {0}!'.format(obj),
+        )
+        self.assertTrue()
+{{% elif dexterity_type_name_klass == 'Item' %}}
+        self.assertTrue(
+            IDexterityItem.providedBy(obj),
+            u'IDexterityItem not provided by {0}!'.format(obj),
+        )
+        self.assertTrue(IDexterityItem.providedBy(obj))
+{{% endif %}}
+
+    def test_ct_{{{ dexterity_type_name_normalized }}}_adding(self):
+        setRoles(self.portal, TEST_USER_ID, ['Contributor'])
+{{% if dexterity_parent_container_type_name %}}
+        obj = api.content.create(
+            container=self.parent,
+            type='{{{ dexterity_type_name }}}',
+            id='{{{ dexterity_type_name_normalized }}}',
+        )
+{{% else %}}
+        obj = api.content.create(
+            container=self.portal,
+            type='{{{ dexterity_type_name }}}',
+            id='{{{ dexterity_type_name_normalized }}}',
+        )
+{{% endif %}}
+
+{{% if dexterity_type_create_class %}}
+        self.assertTrue(
+            I{{{ dexterity_type_name_klass }}}.providedBy(obj),
+            u'I{{{ dexterity_type_name_klass }}} not provided by {0}!'.format(
+                obj.id,
+            ),
+        )
+{{% elif dexterity_type_name_klass == 'Container' %}}
+        self.assertTrue(
+            IDexterityContainer.providedBy(obj),
+            u'IDexterityContainer not provided by {0}!'.format(obj.id),
+        )
+        self.assertTrue()
+{{% elif dexterity_type_name_klass == 'Item' %}}
+        self.assertTrue(
+            IDexterityItem.providedBy(obj),
+            u'IDexterityItem not provided by {0}!'.format(obj.id),
+        )
+        self.assertTrue(IDexterityItem.providedBy(obj))
+{{% endif %}}
+
+{{% if dexterity_type_global_allow | to_boolean %}}
+    def test_ct_{{{ dexterity_type_name_normalized }}}_globally_addable(self):
+        setRoles(self.portal, TEST_USER_ID, ['Contributor'])
+        fti = queryUtility(IDexterityFTI, name='{{{ dexterity_type_name }}}')
+        self.assertTrue(
+            fti.global_allow,
+            u'{0} is not globally addable!'.format(fti.id)
+        )
+{{% else %}}
+    def test_ct_{{{ dexterity_type_name_normalized }}}_globally_not_addable(self):
+        setRoles(self.portal, TEST_USER_ID, ['Contributor'])
+        fti = queryUtility(IDexterityFTI, name='{{{ dexterity_type_name }}}')
+        self.assertFalse(
+            fti.global_allow,
+            u'{0} is globally addable!'.format(fti.id)
+        )
+{{% endif %}}
+{{% if dexterity_type_filter_content_types | to_boolean and dexterity_type_base_class | lower == 'container' %}}
+
+    def test_ct_{{{ dexterity_type_name_normalized }}}_filter_content_type_true(self):
+        setRoles(self.portal, TEST_USER_ID, ['Contributor'])
+        fti = queryUtility(IDexterityFTI, name='{{{ dexterity_type_name }}}')
+        portal_types = self.portal.portal_types
+        parent_id = portal_types.constructContent(
+            fti.id,
+            self.portal,
+            '{{{ dexterity_type_name_normalized }}}_id',
+            title='{{{ dexterity_type_name }}} container',
+         )
+        self.parent = self.portal[parent_id]
+        with self.assertRaises(InvalidParameterError):
+            api.content.create(
+                container=self.parent,
+                type='Document',
+                title='My Content',
+            )
+{{% elif not dexterity_type_filter_content_types | to_boolean and dexterity_type_base_class | lower == 'container' %}}
+
+    def test_ct_{{{ dexterity_type_name_normalized }}}_filter_content_type_false(self):
+        setRoles(self.portal, TEST_USER_ID, ['Contributor'])
+        fti = queryUtility(IDexterityFTI, name='{{{ dexterity_type_name }}}')
+        portal_types = self.portal.portal_types
+        parent_id = portal_types.constructContent(
+            fti.id,
+            self.portal,
+            '{{{ dexterity_type_name_normalized }}}_id',
+            title='{{{ dexterity_type_name }}} container',
+         )
+        self.parent = self.portal[parent_id]
+        obj = api.content.create(
+            container=self.parent,
+            type='Document',
+            title='My Content',
+        )
+        self.assertTrue(
+            obj,
+            u'Cannot add {0} to {1} container!'.format(obj.id, fti.id)
+        )
+{{% endif %}}
