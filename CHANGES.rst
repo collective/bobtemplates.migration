@@ -1,8 +1,8 @@
 Changelog
 =========
 
-0.1 (unreleased)
+0.1 (2018-11-21)
 ------------------
 
-- Initial setup
+- Initial package creation
   [cdw9]
