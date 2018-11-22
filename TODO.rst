@@ -1,4 +1,4 @@
 To Do
 =====
 
-- tests
+- fix/update tests, use tox
