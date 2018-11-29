@@ -117,7 +117,7 @@ or activate your virtualenv:
 
 .. code-block:: console
 
-    mrbob -O bobtemplates.migration:jsonify -O src/collective.foo
+    mrbob bobtemplates.migration:jsonify -O src/collective.foo
 
 This will create your Plone package inside the ``src`` directory.
 
