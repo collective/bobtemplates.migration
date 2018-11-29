@@ -99,7 +99,7 @@ If you are using `buildout <https://pypi.python.org/pypi/zc.buildout>`_  or an u
 
 .. code-block:: console
 
-    ./bin/mrbob -O bobtemplates.migration:jsonify -O src/collective.foo
+    ./bin/mrbob bobtemplates.migration:jsonify -O src/collective.foo
 
 If you are using pipenv or an activated virtualenv, you can use mrbob like this:
 
@@ -149,5 +149,5 @@ Contribute
 ==========
 
 - Issue Tracker: https://github.com/collective/bobtemplates.migration/issues
-- Source Code: https://github.com/plone/bobtemplates.migration
+- Source Code: https://github.com/collective/bobtemplates.migration
 - Documentation: https://training.plone.org/5/transmogrifier
