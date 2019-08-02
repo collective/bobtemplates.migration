@@ -1,5 +1,0 @@
-===================
-ploneconf.migration
-===================
-
-User documentation
