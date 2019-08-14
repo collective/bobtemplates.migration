@@ -3,4 +3,4 @@
 # use this extend one of the buildout configuration:
 extends =
 #    plone51.cfg
-#    plone52.cfg
+    plone52.cfg
