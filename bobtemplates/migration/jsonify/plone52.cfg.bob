@@ -20,6 +20,13 @@ parts =
     plone-helper-scripts
 develop = .
 
+# while the Python 3 work hasn't been released yet, use these checkouts
+# auto-checkout = *
+# [sources]
+# collective.transmogrifier = git git@github.com:collective/collective.transmogrifier.git branch=python3
+# plone.app.transmogrifier = git git@github.com:collective/plone.app.transmogrifier.git branch=python3
+# collective.jsonmigrator = git git@github.com:collective/collective.jsonmigrator.git branch=python3
+# transmogrify.dexterity = git git@github.com:collective/transmogrify.dexterity.git
 
 [instance]
 recipe = plone.recipe.zope2instance

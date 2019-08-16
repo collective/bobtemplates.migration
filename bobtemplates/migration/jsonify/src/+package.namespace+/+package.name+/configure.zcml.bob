@@ -6,7 +6,6 @@
 
   <!-- Set up z3c.autoinlcude to scan dependencies and plugins of this package -->
   <includePlugins package="." />
-  <includeDependencies package="." />
   <include package=".import" />
 
   <five:registerPackage package="." initialize=".initialize" />
