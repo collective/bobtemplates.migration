@@ -1,8 +1,11 @@
 Changelog
 =========
 
-0.3 (Unreleased)
+0.3 (2019-08-16)
 ----------------
+
+- Finalize Python 3 compatibility
+  [cdw9]
 
 
 0.2 (2019-08-07)
