@@ -26,8 +26,13 @@ Compatibility
 
 Add-ons created with ``bobtemplates.migration`` are tested to work in Plone 5.1 and 5.2.
 They should also work with older versions but that was not tested (if you are using this to
-migrate to a new Plone site, you should be using the latest version of Plone).
+migrate to a new Plone site, you should be using the latest version of Plone and Python 3).
 It should work on Linux, Mac and Windows.
+
+In the buildout this template creates, there are configs for both Plone 5.1 and 5.2.
+By default, buildout.cfg points to plone52.cfg.
+For use with Python 3 (recommended), you may also need to uncomment the [sources] section
+to checkout the unreleased Python 3 fixes for the Transmogrifier add-ons.
 
 
 Documentation
