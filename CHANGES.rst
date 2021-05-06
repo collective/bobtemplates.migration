@@ -1,6 +1,14 @@
 Changelog
 =========
 
+0.4 (unreleased)
+----------------
+
+- Use https://dist.plone.org/release/5.2-latest/requirements.txt in
+  requirements.txt of generated package.
+  [wesleybl]
+
+
 0.3 (2019-08-16)
 ----------------
 

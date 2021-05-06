@@ -1,0 +1,27 @@
+*.egg-info
+*.mo
+.*project
+*.py[cod]
+.settings
+# dirs
+bin/
+tmp/
+build/
+lib/
+.tox/
+develop-eggs/
+include/
+local/
+_build
+__pycache__
+.cache
+.vagrant
+# files
+pip-selfcheck.json
+.python-version
+.Python
+.coverage*
+coverage.xml
+Vagrantfile
+.DS_Store
+/pyvenv.cfg
